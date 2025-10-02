@@ -1,0 +1,40 @@
+[
+  {
+    "author": [
+      {
+        "family": "Girvin",
+        "given": "Steven M."
+      },
+      {
+        "family": "Yang",
+        "given": "Kun"
+      }
+    ],
+    "isbn": "9781107137394",
+    "isbn-13": "9781107137394",
+    "publisher": "Cambridge University Press",
+    "id": "ModernCondenseGirvin2019",
+    "title": "Modern Condensed Matter Physics",
+    "issued": {
+         "date-parts": [[2005]]
+    },
+    "type": "book"
+  },
+  {
+    "author": [
+      {
+        "family": "Jackson",
+        "given": "John David"
+      }
+    ],
+    "isbn": "9780471309321",
+    "isbn-13": "9780471309321",
+    "publisher": "Wiley",
+    "id": "ClassicalElectJackso1999",
+    "issued": {
+         "date-parts": [[1999]]
+    },
+    "title": "Classical electrodynamics",
+    "type": "book"
+  }
+]

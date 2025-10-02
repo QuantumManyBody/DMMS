@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/sunburst.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/julia.min.js"></script>
+<script>hljs.highlightAll();</script>
+<style>
+    body {
+    background-color: rgb(15, 15, 15);
+    color: rgb(240, 240, 240);
+    font-size: 12pt;
+    font-family: "Geist", sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+.toc {
+    flex: 1;
+    background-color: rgb(30, 30, 30);
+}
+
+.toccontainer {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow: auto;
+    scrollbar-color: rgb(160, 160, 160) rgb(30, 30, 30);
+}
+
+.toggler {
+    width: 8px;
+    color: rgb(50, 50, 50);
+    background-color: rgb(50, 50, 50);
+}
+
+.toggler:hover {
+    background-color: rgb(80, 80, 80);
+}
+
+.main {
+    width: 1240px;
+    margin: 0em auto;
+    scrollbar-color: rgb(160, 160, 160) rgb(30, 30, 30);
+}
+
+a {
+    text-decoration: none;
+    color: rgb(210, 210, 210);
+}
+
+a:hover {
+    color: rgb(214, 0, 28);
+}
+
+.content, .content-2 {
+    width: 576px;
+    padding: 0 12px;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.content {
+    float: right;
+}
+
+.content-2 {
+    float: left;
+    scrollbar-color: rgb(15, 15, 15) rgb(15, 15, 15);
+}
+
+.searchbar {
+    margin: 0.8em;
+}
+
+#searchCount {
+    color: rgb(120, 120, 120);
+    padding: 2pt;
+    margin-left: 1em;
+}
+
+.searchbar label {
+    margin-right: 0.4em;
+}
+
+#searchbox, #latexsearch {
+    background-color: rgb(15, 15, 15);
+    color: rgb(240, 240, 240);
+    font-size: 1em;
+    padding: 4pt;
+    border: none;
+    width: 100%;
+}
+#searchbox:focus, #latexsearch:focus {
+    border: none;
+    outline: none;
+    border-bottom: 2pt solid white;
+}
+
+
+
+
+@media only screen and (max-width: 1440px) {
+    .main {
+        width: 620px;
+    }
+
+    .content-2 {
+        display: none;
+    }
+}
+
+
+
+p {
+    text-wrap: pretty;
+    text-align: justify;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+p:has(+ p) {
+    margin-bottom: 2em;
+}
+
+
+
+pre div button {
+    display: block;
+    background-color: rgb(70, 70, 70);
+    border: none;
+    font-size: 1em;
+    color: rgb(210, 210, 210);
+}
+
+pre div button:hover {
+    background-color: rgb(214, 0, 28);
+    color: white;
+}
+
+pre div button:active {
+    /* border: 1px solid rgb(75, 210, 210); */
+    background-color: white;
+    color: black;
+}
+
+pre div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(110, 110, 110);
+}
+
+pre p {
+    /* font-size: 0.6em; */
+    margin: 0px;
+    color: rgb(140, 140, 140);
+}
+
+pre {
+    /* border-radius: 4px; */
+    border: 1px solid rgb(120, 120, 120);
+    margin-left: 8px;
+}
+
+pre code.hljs {
+    padding: 0.4em;
+    font-size: 12pt;
+    font-family: "Geist Mono", monospace;
+    scrollbar-color: rgb(160, 160, 160) rgb(30, 30, 30);
+    background-color: rgb(15,15,15);
+}
+
+.page {
+    font-size: 1.6em;
+    font-family: "Geist Mono", monospace;
+    padding: 2px 8px;
+    margin-top: 3em;
+}
+
+.page:hover {
+    color: rgb(214, 0, 28);
+}
+
+h1 {
+    text-wrap: balance;
+    width: 80%;
+    margin: 1em 0;
+    padding-left: 8px;
+}
+
+h2,
+h3 {
+    font-size: 1em;
+    font-weight: normal;
+    padding: 2px 8px;
+    margin-top: 3em;
+}
+
+h2 {
+    background-color: rgb(50, 50, 50);
+}
+
+h3 {
+    border-bottom: 1px solid rgb(120, 120, 120);
+}
+
+.toc a,
+.toc details summary {
+    padding: 2px 6px;
+    font-family: "Geist", sans-serif;
+    font-size: 20px;
+    color: rgb(210, 210, 210);
+    border-bottom: 2px solid rgb(60, 60, 60);
+}
+.toc details a {
+    padding-left: 30px;
+    text-wrap: nowrap;
+}
+
+.toc a {
+    display: block;
+}
+
+.toc a:hover,
+.toc details summary:hover {
+    color: rgb(240, 240, 240);
+    background-color: rgb(214, 0, 24);
+    border-bottom: 2px solid rgb(214, 0, 28);
+}
+
+.toc a:active,
+.toc details summary:active {
+    /* border: 2px dotted rgb(200, 200, 200); */
+    background-color: white;
+    color: black;
+}
+
+.pkgname {
+    background-color: rgb(84, 84, 84);
+    padding: 10px 8px;
+}
+
+td,
+th {
+    margin: 0px;
+    padding: 8px;
+    border: 1px solid rgb(120, 120, 120);
+}
+
+table {
+    margin: auto;
+    border: 1px solid rgb(120, 120, 120);
+    border-collapse: collapse;
+    /* background-color: rgb(30,30,30); */
+}
+
+
+p img {
+    width:94%;
+    margin: auto;
+    display: block;
+}
+.caption {
+    padding-top: 1em;
+    width:90%;
+    margin: auto;
+    display: block;
+}
+
+.admonition {
+    margin: 1em;
+    padding: 0 8px;
+    border: 2px solid rgb(120, 120, 120);
+}
+
+.figure {
+    width: 96%;
+    margin: auto;
+}
+
+.warning .admonition-title {
+    color: rgb(214, 0, 28);
+}
+
+.admonition-title {
+    margin: 0pt;
+    padding: 4pt;
+    border-bottom: 2px solid rgb(120, 120, 120);
+}
+
+#sidebar {
+    min-width: 200px;
+    max-width: 300px;
+    display: block;
+}
+
+.tex {
+    color: rgb(240, 240, 240);
+}
+
+details .anchor {
+    display: none;
+}
+
+mark {
+    background: rgb(30, 30, 30);
+    color: rgb(214, 0, 28);
+}
+
+.currmark {
+    color: rgb(214, 0, 28);
+    border: 2px solid white;
+    background: rgb(240, 240, 240);
+}
+
+.highlightSymbol {
+    border: 2px solid white;
+    font-size: 1.2em;
+    padding: 6px;
+}
+
+.references h2 {
+    font-size: 2em;
+    background-color: rgb(15, 15, 15);
+}
+</style>
+<script>
+    async function copyCode(block) {
+    let code = block.querySelector("code");
+    let text = code.innerText;
+
+    await navigator.clipboard.writeText(text);
+}
+
+function sidebar_visible() {
+    var x = document.getElementById("sidebar");
+    return window.getComputedStyle(x).display == "block";
+}
+
+function toggle_sidebar() {
+    var x = document.getElementById("sidebar");
+    if (window.getComputedStyle(x).display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+
+function process_page() {
+    add_image_captions();
+    label_theorems(".theorem", "Theorem", "Th.");
+    label_theorems(".definition", "Definition", "Def.");
+    label_theorems(".figure", "Figure", "Fig.");
+    set_keys();
+    number_sections();
+    second_column();
+    clip();
+}
+
+
+function add_image_captions() {
+    var images = document.querySelectorAll('p img'); 
+
+    for (var i = 0; i < images.length; i++) {
+        caption = document.createElement("p");
+        caption.classList.add("caption")
+        caption.innerHTML = `${images[i].alt}`;
+        images[i].after(caption);
+    }
+}
+
+
+function clip() {
+    let blocks = document.querySelectorAll("pre:has(code)");
+    blocks.forEach((block) => {
+        let button = block.querySelector("div button");
+        if (button){
+            button.addEventListener("click", async () => {
+                await copyCode(block);
+            });
+
+        }
+    });
+}
+
+function label_theorems(class_name, full_name, ref_name) {
+    let theorems = document.querySelectorAll(class_name);
+
+    let id_map = new Map();
+    let full_rul = new URL(document.URL);
+    let base_url = full_rul.origin;
+
+    for (var i = 0; i < theorems.length; i++) {
+        theorem = theorems[i];
+        theorem.querySelector(".admonition-title").innerHTML = `${full_name} ${i+1}`;
+        id_map.set(`${base_url}/#${theorem.id}`, i);
+    }
+
+    let theorem_refs = document.querySelectorAll("a");
+
+    for (ref of theorem_refs) {
+        let theorem_number = id_map.get(`${base_url}/${ref.href.split("/").at(-1)}`);
+        if (theorem_number !== undefined) {
+            ref.innerHTML = `${ref_name} ${theorem_number + 1}`;
+        }
+    }
+
+}
+
+function second_column() {
+
+    let main = document.querySelector(".main");
+    let content = main.querySelector(".content");
+
+    content_2 = document.createElement("div");
+    content_2 = content.cloneNode(true);
+    content_2.classList = ["content-2"];
+    // content_2.innerHTML = content.innerHTML;
+    content.before(content_2)
+
+    /* let scroll = content_2.scrollTop;
+    content.scrollTo(0, scroll + content_2.offsetHeight) */
+
+    content_2.addEventListener("scroll", (event) => {
+        let scroll = content_2.scrollTop;
+        content.scrollTo(0, scroll + content_2.offsetHeight)
+    });
+    var scrollpos = localStorage.getItem('scrollpos');
+    if (scrollpos) content_2.scrollTo(0, scrollpos);
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('scrollpos', content_2.scrollTop);
+    };
+
+    content_2.querySelectorAll('*').forEach(function(node) {
+        if (node.id != ""){
+            node.id = `${node.id}-2`
+        }
+    });
+
+}
+
+function number_sections() {
+
+    id_map = new Map();
+    let full_rul = new URL(document.URL);
+    let base_url = full_rul.origin;
+
+    let chapter_counter = 0;
+    let section_counter = 0;
+    toc = document.querySelector('.toccontainer')
+    let curr_detail = null;
+    document.querySelectorAll('.page, h2').forEach((node) => {
+        if (node.tagName == 'SUMMARY') {
+            chapter_counter += 1;
+            section_counter = 0;
+            title = node.querySelector('span');
+            sec = document.createElement('span');
+            sec.innerHTML = `${chapter_counter}. `;
+
+            title.before(sec);
+            id_map.set(`${base_url}/#${node.id}`, `${chapter_counter}`);
+
+            details = document.createElement('details')
+            summary = document.createElement('summary')
+            summary.appendChild(sec.cloneNode(true))
+            summary.appendChild(title.cloneNode(true))
+            details.appendChild(summary)
+            toc.appendChild(details)
+            curr_detail = details
+        } else {
+            if (node.id == "refs") {
+                return;
+            }
+            section_counter += 1;
+            node.innerHTML = `${chapter_counter}.${section_counter} ${node.innerHTML}`;
+            id_map.set(`${base_url}/#${node.id}`, `${chapter_counter}.${section_counter}`);
+
+            if (curr_detail !== null) {
+                line = document.createElement('a');
+                line.innerHTML = node.innerHTML;
+                line.href = `#${node.id}`;
+                curr_detail.appendChild(line);
+            }
+        }
+
+    })
+
+    let section_refs = document.querySelector(".main").querySelectorAll("a");
+
+    for (ref of section_refs) {
+        if (ref.classList.contains("anchor")) {
+            continue;
+        }
+        let section_number = id_map.get(ref.href);
+        if (section_number !== undefined) {
+            ref.innerHTML = `${section_number} ${ref.innerHTML}`;
+        }
+    }
+
+}
+
+
+let marker = null;
+let marks = [];
+let mark_curr = null;
+
+function liveSearch() {
+    // use content 2 on mobile
+    content = document.querySelector('.content');
+
+
+    let search_query = document.getElementById("searchbox").value;
+
+    document.getElementById("searchCount").innerHTML = "";
+    if (marker !== null) { marker.unmark(); }
+
+    marks = [];
+    mark_curr = null;
+    if (search_query == '') return;
+
+    marker = new Mark(content.querySelectorAll('p, h2, h3, h4, h5, ul, ol'));
+    marker.mark(search_query, {className: "rightmark", separateWordSearch: false});
+
+    marks = document.querySelectorAll('mark');
+}
+
+
+
+function scroll_to_prev() {
+    let content = document.querySelector(".content");
+
+    if (marks.length == 0) { return; }
+
+    if (mark_curr === null) {
+        mark_curr = 1;
+    }
+    if (marks[mark_curr]) {
+        marks[mark_curr].classList.remove("currmark");
+    }
+
+    found_next_mark = false;
+    for (var i = mark_curr-1; i >= 0; i--) {
+        if (marks[i].getBoundingClientRect().y < content.offsetHeight) {
+            mark_curr = i;
+            found_next_mark = true;
+            break;
+        }
+    }
+    if (!found_next_mark) { mark_curr = marks.length - 1; }
+
+    marks[mark_curr].scrollIntoView(
+        { 
+            behavior: "smooth", 
+            block:  "center",
+        }
+    );
+    marks[mark_curr].classList.add("currmark")
+    document.getElementById("searchCount").innerHTML = `search: ${mark_curr+1}/${marks.length}`;
+}
+
+function scroll_to_next() {
+
+    if (marks.length == 0) { return; }
+
+    if (mark_curr === null) {
+        mark_curr = -1;
+    }
+    if (marks[mark_curr]) {
+        marks[mark_curr].classList.remove("currmark");
+    }
+
+    found_next_mark = false;
+    for (var i = mark_curr+1; i < marks.length; i++) {
+        if (marks[i].getBoundingClientRect().y > 0) {
+            mark_curr = i;
+            found_next_mark = true;
+            break;
+        }
+    }
+    if (!found_next_mark) { mark_curr = 0; }
+
+    marks[mark_curr].scrollIntoView(
+        { 
+            behavior: "smooth", 
+            block:  "center",
+        }
+    );
+    marks[mark_curr].classList.add("currmark")
+    document.getElementById("searchCount").innerHTML = `search: ${mark_curr+1}/${marks.length}`;
+}
+
+function set_keys() {
+    let searchbox = document.getElementById('searchbox');
+
+    function swap_window() {
+        let content_2 = document.querySelector(".content-2");
+        let content = document.querySelector(".content");
+        bookmark = content_2.scrollTop;
+        content_2.scrollTo(0, content.scrollTop);
+        setTimeout(() => {content.scrollTo(0, bookmark)}, 10)
+    }
+
+    window.addEventListener("keydown", (event) =>{
+        if (event.metaKey && event.key === "k") {
+            if (!sidebar_visible()) {toggle_sidebar();}
+            searchbox.focus();
+        } else if (event.keyCode === 13) {
+            if (event.shiftKey) {
+            scroll_to_prev();
+            } else {
+            scroll_to_next();
+            }
+        } else if (event.metaKey && event.key === "i") {
+            swap_window();
+        }
+
+    })
+
+    window.addEventListener("keyup", (event) =>{
+        if (event.keyCode === 27) {
+            if (sidebar_visible()) {
+                toggle_sidebar();
+            }
+        } 
+        /* else if (event.key === "h") {
+            let content = document.querySelector(".content-2");
+            content.scrollBy(0, -content.offsetHeight)
+        } else if (event.key === "l") {
+            let content = document.querySelector(".content-2");
+            content.scrollBy(0, content.offsetHeight)
+        } else if (event.key === "o") {
+            let content_2 = document.querySelector(".content-2");
+            let content = document.querySelector(".content");
+            bookmark = content_2.scrollTop;
+            content_2.scrollTo(0, content.scrollTop);
+
+            setTimeout(() => {content.scrollTo(0, bookmark)}, 10)
+        } */
+
+
+
+    })
+    window.addEventListener("dblclick", (event) => { 
+        swap_window();
+    })
+}
+
+function latexSearch(){
+    content = document.querySelector('.content');
+
+    let search_query = document.getElementById("latexsearch").value;
+    latex_symbols = content.querySelectorAll("mjx-texatom, mjx-msup, mjx-msub, mjx-mi");
+
+    if (mark_curr != null) {
+        marks[mark_curr].classList.remove("currmark")
+    }
+
+    document.querySelectorAll('.highlightSymbol').forEach(
+        (node) => { 
+            node.classList.remove('highlightSymbol');
+        }
+    )
+    
+    marks = [];
+    mark_curr = null;
+    if (search_query == '') return;
+    document.getElementById("searchCount").innerHTML = "";
+
+    for (var i = 0; i < latex_symbols.length; i++) {
+        latex_symbols[i].classList.remove("highlightSymbol")
+        if (latex_symbols[i].dataset.latex == search_query) {
+            latex_symbols[i].classList.add("highlightSymbol");
+            marks[marks.length] = latex_symbols[i];
+        }
+    }
+}
+
+</script>
+
+<script>
+MathJax = {
+  loader: {load: ['[tex]/physics']},
+
+  tex: {
+    inlineMath: {'[+]': [['$', '$']]},
+    tags: 'ams',
+    packages: {'[+]': ['physics']},
+  },
+  svg: {
+    fontCache: 'global'
+  },
+  output: {
+    font: 'mathjax-stix2',
+    displayOverflow: 'linebreak', 
+  }
+};
+</script> 
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+</head>
+    <body onload="process_page();">
+    <aside id="sidebar" class="toc">
+    <div class="toccontainer">
+    <image style="margin: 10px 20px;"
+    width="120px" src="./assets/logo.png">
+    </image>
+    <div class="pkgname">DMMS</div>
+    <div class="searchbar">
+    <input 
+      type="search" 
+      oninput="liveSearch()" 
+      id="searchbox" 
+    placeholder="meta-k to search"
+    >
+    </div>
+    <div class="searchbar">
+    <input 
+      type="search" 
+      oninput="latexSearch()" 
+      id="latexsearch" 
+    placeholder="search latex symbols"
+    >
+    </div>
+    <div id="searchCount"></div>
+    </div>
+    </aside>
+    <div class="toggler" onclick="toggle_sidebar();">-</div>
+    <div class="main">
+    <div class="content">
+    <h1 id="diagnostic-manual-of-material-simulation"><a href="#diagnostic-manual-of-material-simulation" class="anchor"></a>Diagnostic Manual of Material Simulation</h1>
+<div class="admonition warning"><p class="admonition-title">Warning</p>
+<p>The following practices are considered academic integrity violations.</p>
+<ul>
+<li>Writing with LLMs.</li>
+<li>Copying from textbooks.</li>
+</ul>
+<p>If you do not have the time, effort, or interest for this writing exercise,
+it is preferable to not write at all.</p>
+</div>
+<h2 id="requirements-"><a href="#requirements-" class="anchor"></a>Requirements</h2>
+<p>Given a concept, there are three questions that we like to answer:</p>
+<ol>
+<li>What is the physical context that makes it important?</li>
+<li>How to formulate it with mathematical precision and clarity?</li>
+<li>How to implement it algorithmically in practice?</li>
+</ol>
+<p>You should answer one or more of these questions if you can unless you have better ideas.
+What you should not do is to dismiss or evade these questions by writing things that make
+no sense.</p>
+<h3 id="notation"><a href="#notation" class="anchor"></a>Notation</h3>
+<ul>
+<li>Dynamic tensors: A tensor whose dimensions are variables or infinite such as <span class="math tex">\(\mathbb{R}^{N \times N}\)</span>.
+For such tensors, use a letter with no decoration such as <span class="math tex">\(x\)</span> or <span class="math tex">\(T\)</span>. This includes scalar, vector, matrices, and higher dimensional tensors.</li>
+<li>Static tensors: A tensor whose dimensions are constants such as <span class="math tex">\(\mathbb{R}^{4}\)</span>.
+For such tensors, add an arrow on top of the letter. For example, <span class="math tex">\(\vec{x}\)</span> or <span class="math tex">\(\vec{T}\)</span>.</li>
+<li>Mixed tensors:
+If a tensor has both static and dynamic dimensions such as <span class="math tex">\(\mathbb{C}^{2 \times N}\)</span>, adopt the notation for static tensors.</li>
+<li>Fourier transforms: use a hat such as <span class="math tex">\(\hat{\rho}\)</span>.</li>
+<li>Fourier series coefficients: use an overline such as <span class="math tex">\(\overline{u}\)</span>.</li>
+<li>Field, Ring, Module, Group: use blackboard bold such as <span class="math tex">\(\mathbb{Q}\)</span>.</li>
+<li>The reciprocal of an algebraic space: add a star such as <span class="math tex">\(\mathbb{L}^*\)</span>.</li>
+<li>Quantum states: use braket notation such as <span class="math tex">\(\ket{\psi}\)</span>.</li>
+<li>Cartesian inner product (dynamic): use braket notation <span class="math tex">\(\bra{\psi}\ket{\phi}\)</span> instead of math notation <span class="math tex">\(\langle \psi, \phi \rangle\)</span>.</li>
+<li>Cartesian inner product (static): <span class="math tex">\(\vec{u} \cdot \vec{v}\)</span>.</li>
+<li>Coulomb inner product (static): <span class="math tex">\((\psi| \phi)\)</span>.</li>
+<li>Outer product: <span class="math tex">\(\ket{\psi}\bra{\phi}\)</span> for quantum states and <span class="math tex">\(\vec{u} \vec{v}^T\)</span> for static vectors.</li>
+<li>Frobenius norm: <span class="math tex">\(|\vec{r}|\)</span>.</li>
+<li>Partial derivatives: write <span class="math tex">\(\partial \psi(k, r) / \partial r\)</span>, <span class="math tex">\(\partial_r \psi(k, r)\)</span>, <span class="math tex">\(D(r \mapsto \psi(k, r))(r)\)</span>
+or <span class="math tex">\(\nabla_{\vec{r}} \psi(\vec{k}, \vec{r})\)</span>. Do not use <span class="math tex">\(\psi_x\)</span> or <span class="math tex">\(\dot{\psi}\)</span>.</li>
+<li>Variational derivatives: write <span class="math tex">\(\nabla J(\psi)\)</span> instead of <span class="math tex">\(\delta J(\psi) / \delta \psi\)</span>.</li>
+<li>Finite parameter: if the parameter is on a finite domain, use subscript such as <span class="math tex">\(n\)</span> in <span class="math tex">\(\psi_{n k}(r)\)</span>.</li>
+<li>Infinite (possible countable) parameter: keep the parameter in parenthesis such as <span class="math tex">\(P\)</span> in <span class="math tex">\(w_n(P, r)\)</span>.</li>
+<li>Summation: write explicit summations such as <span class="math tex">\(\sum_i u_i v_i\)</span>. Avoid Einstein summation.</li>
+<li>Parenthesis: do not use <span class="math tex">\([]\)</span> as parenthesis. Reserved them for commutators.</li>
+<li>Exceptions can be made on a case by case basis to be consistent with the literature.</li>
+</ul>
+<details class="title" style="margin: 1em 0em"><summary id="symmetry-lattice.md" class="page"><span >Symmetry/lattice</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">
+
+## X-Ray scattering 
+
+We will follow the treatment of [@ModernCondenseGirvin2019] and [@ClassicalElectJackso1999].
+
+### X-Ray scattering experiment
+
+Given a piece of material in your hand, how do you find out its atomic coordinates?
+Before electron tunneling microscope, the standard approach is X-Ray
+scattering, which allows you to determine the geometry of the material by
+shining light on it.
+
+{#fig-x-ray}
+!!! figure
+
+    ![X-Ray experiment for probing electron positions](assets/lattice/x_ray_setup.svg) 
+
+The setup of a simplified  experiment is depicted in [](#fig-x-ray). Given a
+atom at $\vec{r}_n$, which has an electron with a time dependent position
+$\vec{r}_e(t)$ relative to the nuclei. We shine an electromagnetic planewave to
+the atom with wave vector $\vec{k}$, which shakes the electron into a harmonic
+motion. The oscillating electron then radiates an electromagnetic field 
+that is received by a detector at $\vec{R}_D$, which measures the intensity of 
+the radiated wave. By measuring the intensity of the radiation at different
+$\vec{R}_D$, we aim to infer the location of the atom $\vec{r}_n$. This requires
+a theoretical model of the measurement $\vec{E}(\vec{R}_D, t)$ as a function of $\vec{r}_n$, which is inverted 
+to obtain $\vec{r}_n$
+
+
+
+The experimental setup establishes a few assumptions that we will later exploit 
+when modeling
+1. the electron is considered a classical point charge.
+2. the electron moves slowly, so magnetic field can be ignored.
+3. the nuclei is too heavy to move or radiate.
+4. the detector is far from the source, so we can make far field approximations.
+
+Given these assumptions, we can build a model for the experiment.
+
+
+### A point charge in an electric field
+
+An X-Ray can be approximately modeled as a planewave, whose electrical component
+takes the form
+
+$$
+\begin{equation}
+\vec{\epsilon}(\vec{r}, t) = \vec{E}_{\mathrm{in}} \Re{e^{- i \omega t} e^{i \vec{k} \cdot \vec{r}}},
+\end{equation}
+$$
+
+where $\vec{E}_{\mathrm{in}}$ is the magnitude and polarization of the field,
+$\omega$ is the frequency, and $\vec{k}$ is the inverse wave length. We have
+taken the real part of the complex wavefunction because the electric field is
+real-valued, but it is customary in electromagnetism keep everything
+complex and take the real part at the end, so we will do the same.
+
+The X-Ray exerts a force on the electron, which moves according to Newton's 
+law. Therefore, we can solve and ODE to obtain $\vec{r}_e(t)$
+
+$$
+\begin{equation}
+\frac{\partial^2 \vec{r}_e(t)} {\partial t^2} = - \frac{e}{m_e} \vec{\epsilon}(\vec{r}_n + \vec{r}_e(t), t),  \label{eqn:x-ray-ode}
+\end{equation}
+$$
+
+where $m_e$ is the mass of the electron. Let us also assume that the incident
+field is transverse, which means that $\vec{E}_{\mathrm{in}} \cdot \vec{k} =
+0$. Because the electron moves in the direction of the field, we also  have
+$\vec{r}_e(t) \cdot \vec{k} = 0$. This allows us to write $\vec{\epsilon}(\vec{r}_n + \vec{r}_e(t), t) = \vec{\epsilon}(\vec{r}_n, t)$ and the solution to Eq. $\ref{eqn:x-ray-ode}$
+is
+
+$$
+\begin{equation}
+\vec{r}_e(t) = \frac{e}{ m_e \omega^2} \vec{E}_{\mathrm{in}} e^{i \vec{k} \cdot \vec{r}_n} e^{- i \omega t}.
+\end{equation}
+$$
+
+We have implicitly and arbitrarily chosen a boundary condition because
+different boundary conditions will lead to the same result.
+
+
+### Radiation from an oscillating dipole 
+
+An oscillating point charge radiates electromagnetic field. This can be seen by
+solving the Maxwell equation with the source electron density 
+
+$$
+\begin{equation}
+\rho(\vec{r}, t) = e \delta(\vec{r} - \vec{r}_e(t)).
+\end{equation}
+$$
+
+The solution to this type of problems can be found in 9.1 and 9.2 in
+[@ClassicalElectJackso1999], which approximates the vector potential given a
+time harmonic source current
+
+$$
+\begin{equation}
+\vec{A}(\vec{r}, t) = \frac{\mu_0}{ 4 \pi} \frac{e^{i \vec{k} \cdot \vec{r}}}{r} \int \vec{J}(\vec{r}', t) \mathrm{d} r', \label{eqn:vector-potential}
+\end{equation}
+$$
+
+where $\mu_0$ is one of many annoying but inconsequential constants that you
+should not care about. This approximation holds when 1) the source $\vec{J}$ is
+localized in space and 2) $\vec{r}$ is far away from the source (far field),
+and 3) the current is time harmonic, i.e., $\vec{J}(\vec{r}, t) =
+\vec{J}(\vec{r}) e^{-i \omega t}$.
+
+
+
+Since our source is given in terms of the charge density, we need to
+relate it to the current density through the continuity relation.
+
+{#cont-relation}
+!!! theorem
+
+    For the purpose of demonstrating the syntax for theorems, we write the 
+    continuity relation as a theorem
+
+    $$
+    \begin{equation}
+    \grad \cdot  \vec{J} (\vec{r}, t) = \frac{\partial \rho(\vec{r}, t)}{\partial t} = 
+    (\nabla \delta) (\hat{r} - \hat{r}_e(t)) \cdot \frac{\partial \vec{r}_e(t)}{\partial t},
+    \end{equation}
+    $$
+
+    which is indeed time harmonic because $\vec{r}_e(t)$ is time harmonic. 
+
+We can combine Eq. [](#cont-relation) with integration by
+part to obtain an electric dipole
+
+$$
+\begin{equation}
+\vec{p}(t) = \int \vec{J} (\vec{r}', t) \mathrm{d} r' = - \int \vec{r}' \nabla
+\cdot \vec{J}(\vec{r}', t) \mathrm{d} r' = - \int \vec{r}' \rho(\vec{r}', t)
+\mathrm{d} r' = -e \vec{r}_e(t).
+\end{equation}
+$$
+
+The integration by part works because the source current $\vec{J}$ is localized
+in space, so the boundary term vanishes. Plugging this into the vector
+potential in Eq. $\ref{eqn:vector-potential}$  yields 
+
+$$
+\begin{equation}
+\vec{A}(\vec{r}, t) = - \frac{\mu_0 e}{ 4\pi} \frac{e^{i \vec{k} \cdot \vec{r}}}{r} \vec{r}_e(t).
+\end{equation}
+$$
+
+The magnetic field can be obtained through the vector potential and
+the electric field can be obtained from the fourth Maxwell equation.
+
+$$
+\begin{align}
+\vec{H}(\vec{r}, t)  &=  \frac{1}{\mu_0} \nabla \times \vec{A}(\vec{r}, t),\\
+\vec{E}(\vec{r}, t)  &=  \frac{i Z_0}{k} \nabla \times \vec{H}(\vec{r}, t),
+\end{align}
+$$
+
+where $Z_0$ is an unimportant physical constant. This produces an electric
+field at the detector position as  
+
+$$
+\begin{equation}
+\vec{E}(\vec{R}_D, t) = \frac{e^2}{m_e c^2} \left(
+\hat{n} \times (\hat{n} \times \vec{E}_{\mathrm{in}}) \right)
+e^{i \vec{k} \cdot \vec{r}_n} e^{-i \omega t} 
+\frac{e^{i |\vec{k}| |\vec{R}_D - \vec{r}_n|}}{|\vec{r}_D - \vec{r}_n|}.
+\label{eqn:scattered-field}
+\end{equation}
+$$
+
+### Phase Approximation 
+
+In the form of $\ref{eqn:scattered-field}$, it is still inconvenient to solve
+for $\vec{r}_n$ given the measurements $\vec{E}(\vec{R}_D, t)$, so we can
+further approximate it with a Tylor expansion so that it looks like a
+planewave.
+
+$$
+\begin{equation}
+|\vec{k}| |\vec{R}_D - \vec{r}_n| 
+= |\vec{k}| |\vec{R}_D| \sqrt{1 - 2 \frac{\vec{r}_n \cdot \vec{R}_D}{|\vec{R}_D|^2} + \frac{|\vec{r}|^2}{|\vec{R}_D|^2}}
+\approx |\vec{k}| |\vec{R}_D| -  |\vec{k}| \frac{\vec{r}_n \cdot \vec{R}_D}{|\vec{R}_D|} 
+= |\vec{k}| \hat{n} \cdot \vec{R}_D - |\vec{k}| \hat{n} \cdot \vec{r}_n
+\end{equation}
+$$
+
+Defining $\vec{q} =  |\vec{k}| \hat{n} - \vec{k}$, which can be determined from the
+position of the detector and the planewave direction, we find 
+
+$$
+\begin{equation}
+\frac{e^{i |\vec{k}| |\vec{R}_D - \vec{r}_n|}}{|\vec{R}_D - \vec{r}_n|} \approx \frac{e^{i |\vec{k}|
+|\vec{R}_D|}}{|\vec{R}_D|} e^{i (\vec{k} + \vec{q}) \cdot \vec{r}_n}.
+\end{equation}
+$$
+
+With this approximation, we find that the dependence of the radiated field on
+the position of the detector and the atom to be.
+
+$$
+\begin{equation}
+\vec{E}(\vec{R}_D, t) \propto e^{- i \vec{q} \cdot \vec{r}_n}.
+\end{equation}
+$$
+
+### Form factor
+
+In the case where there are $N_e$ electrons, we have multiple sources of
+radiation, and they superimpose due to the linearity of the Maxwell equations.
+Thus, we can replace $e^{- i \vec{q} \cdot \vec{r}_n}$ by 
+
+$$
+\begin{equation}
+f(\vec{q}) = \sum_{i = 1}^Z e^{- i \vec{q} \cdot \vec{r}_j},
+\end{equation}
+$$
+
+which is called the form factor. More generally, when the electrons are not
+point charges but charge densities $\rho$, the form factor is just the Fourier
+transform of the density.
+
+$$
+\begin{equation}
+f(\vec{q}) = \int \mathrm{d} \vec{r} e^{- i \vec{q} \cdot \vec{r}} \rho(\vec{r}).
+\label{eqn:form-factor}
+\end{equation}
+$$
+
+Since the detector measures $f(\vec{q})$, we can recover the electron density
+by taking a inverse Fourier transform.
+
+It is worth pointing out that the model we have developed for the X-Ray
+scattering experiment breaks down when we have more than one electrons or when
+the electron is not a point charge. Thus, we have not proven
+$\ref{eqn:form-factor}$ as a relation between the measurement $f(\vec{q})$ and
+the electron density $\rho$. 
+
+    
+
+## Bravais and reciprocal lattice 
+
+Once we measure $f(\vec{q})$ experimentally, it turns out that it sharply
+peaks on a lattice, which is shown in [](#recip).
+
+{#recip style=\"width:400px\"}
+!!! figure
+
+    ![An example of a reciprocal lattice](assets/lattice/reciprocal.svg)
+
+This lattice can be described as a set of integer linear combinations of three
+basis vectors $G_1$, $G_2$, and $G_3$.
+
+$$
+\begin{equation}
+\mathbb{L}^{*} = \left. \left\{ \sum_{i = 1}^{3} n_i \vec{G}_i  \right| n_i \in \mathbb{Z}, \forall i \in [\![3]\!]  \right\}.
+\end{equation}
+$$
+
+This definition allows us to write down $f(\vec{q})$ approximately as
+
+$$
+\begin{equation}
+f(\vec{q}) = \sum_{G \in \mathbb{L}^*} \overline{\rho}_{\vec{G}} \delta(\vec{q} - \vec{G}),
+\end{equation}
+$$
+
+where the coefficients $\overline{\rho}$ are the intensity of the peaks. From
+the frequency space data, we can reconstruct the electron density by inverting
+$\ref{eqn:form-factor}$
+
+$$
+\begin{equation}
+\rho(r) = \sum_{\vec{G} \in \mathbb{L}^*} \overline{\rho}_{\vec{G}} e^{i \vec{G} \cdot \vec{r}}, \label{eqn:series}
+\end{equation}
+$$
+
+which is a Fourier series expansion whose expansion coefficients are $\overline{\rho}$.
+
+
+If we visualize the density $\rho$ as in [](#bravais), we will see that it is also
+repeated on a lattice, which is called the Bravais lattice.
+
+{#bravais style=\"width:400px\"}
+!!! figure
+
+    ![A example of a Bravais lattice](assets/lattice/bravais.svg)
+
+
+To describe the
+Bravais lattice, we need to identify three primitive lattice translation
+vectors $\vec{a}_1, \vec{a}_2, \vec{a}_3$. The lattice is defined as 
+a set of vectors
+
+$$
+\begin{equation}
+\mathbb{L} = \left. \left\{\sum_i^{3} n_i \vec{a}_i \right| n_i \in \mathbb{Z}, \forall i \right\}.
+\end{equation}
+$$
+
+The periodicity of $\rho$ is now specified as 
+$\rho(\vec{r}) = \rho(\vec{r} +
+\vec{R}), \forall \vec{R} \in \mathbb{L}$. 
+Plugging this into Eq. $\ref{eqn:series}$, we find that 
+$
+e^{i \vec{G} \cdot \vec{R}} = 1, \forall \vec{G} \in \mathbb{L}^*, \vec{R} \in \mathbb{L}
+$.
+For this relation to hold, one sufficient condition is 
+
+$$
+\begin{equation}
+\vec{G}_i \cdot \vec{a}_j = 2\pi \delta_{i j},
+\end{equation}
+$$ 
+
+which is used for relating the two lattices. In fact, these domains are important for 
+defining Bloch waves and Wannier functions, which will be introduced in sec. [](#bloch-theorem) and [](#wannier-interpolation). 
+
+
+## Unit cell and first Brillouin zone
+
+When computing observables of a periodic systems such as the number electrons,
+considering the full system always results in infinities. Instead, we consider
+the number of electrons per period. This periodic is called a unit cell, which is conventionally defined as
+semi-open set
+
+$$
+\begin{equation}
+\Omega = \left. \left\{\sum_{i=1}^3 c_i \vec{a}_i \right| c_i \in [-1/2, 1/2) \right\},
+\end{equation}
+$$
+
+which is illustrated as a shaded region in [](#recip). The definition of the
+unit cell is not unique, but it should satisfy a requirement: tiling a unit
+cell at each point in the Bravais should yield the full space. Mathematically,
+this means 
+
+$$
+\begin{equation}
+\mathbb{R}^3 = \mathbb{L} \times \Omega = \bigsqcup_{R \in \mathbb{L}} \left. \left\{\vec{r} + \vec{R} \right| \forall \vec{r} \in \Omega \right\}, \label{eqn:tiling}
+\end{equation}
+$$
+
+where the notation $\mathbb{L} \times \Omega$ is formally a direct group
+product. Note how the semi-open definition makes the union in
+$\ref{eqn:tiling}$ disjoint.
+
+
+A similar problem of divergence arises in the frequency space, so there is an
+analogous domain called the first Brillouin zone. The definition is again not unique
+as long as it tiles $\mathbb{R}^3$. A conventional definition is 
+
+$$
+\begin{equation}
+\Omega^* = \left. \left\{\sum_{i=1}^3 c_i \vec{G}_i \right| c_i \in [-1/2, 1/2) \right\},
+\end{equation}
+$$
+
+which is shown in [](#bravais).
+</code></pre></details>
+<h2 id="x-ray-scattering-"><a href="#x-ray-scattering-" class="anchor"></a>X-Ray scattering</h2>
+<p>We will follow the treatment of (<span class="citation"><a href="#ref-ModernCondenseGirvin2019">Girvin and Yang 2005</a></span>) and (<span class="citation"><a href="#ref-ClassicalElectJackso1999">Jackson 1999</a></span>).</p>
+<h3 id="x-ray-scattering-experiment"><a href="#x-ray-scattering-experiment" class="anchor"></a>X-Ray scattering experiment</h3>
+<p>Given a piece of material in your hand, how do you find out its atomic coordinates?
+Before electron tunneling microscope, the standard approach is X-Ray
+scattering, which allows you to determine the geometry of the material by
+shining light on it.</p>
+<div class="admonition figure" id="fig-x-ray"><p class="admonition-title">Figure</p>
+<p><img src="assets/lattice/x_ray_setup.svg" alt="X-Ray experiment for probing electron positions" /></p>
+</div>
+<p>The setup of a simplified  experiment is depicted in <a href="#fig-x-ray"></a>. Given a
+atom at <span class="math tex">\(\vec{r}_n\)</span>, which has an electron with a time dependent position
+<span class="math tex">\(\vec{r}_e(t)\)</span> relative to the nuclei. We shine an electromagnetic planewave to
+the atom with wave vector <span class="math tex">\(\vec{k}\)</span>, which shakes the electron into a harmonic
+motion. The oscillating electron then radiates an electromagnetic field
+that is received by a detector at <span class="math tex">\(\vec{R}_D\)</span>, which measures the intensity of
+the radiated wave. By measuring the intensity of the radiation at different
+<span class="math tex">\(\vec{R}_D\)</span>, we aim to infer the location of the atom <span class="math tex">\(\vec{r}_n\)</span>. This requires
+a theoretical model of the measurement <span class="math tex">\(\vec{E}(\vec{R}_D, t)\)</span> as a function of <span class="math tex">\(\vec{r}_n\)</span>, which is inverted
+to obtain <span class="math tex">\(\vec{r}_n\)</span></p>
+<p>The experimental setup establishes a few assumptions that we will later exploit
+when modeling</p>
+<ol>
+<li>the electron is considered a classical point charge.</li>
+<li>the electron moves slowly, so magnetic field can be ignored.</li>
+<li>the nuclei is too heavy to move or radiate.</li>
+<li>the detector is far from the source, so we can make far field approximations.</li>
+</ol>
+<p>Given these assumptions, we can build a model for the experiment.</p>
+<h3 id="a-point-charge-in-an-electric-field"><a href="#a-point-charge-in-an-electric-field" class="anchor"></a>A point charge in an electric field</h3>
+<p>An X-Ray can be approximately modeled as a planewave, whose electrical component
+takes the form</p>
+<div class="display-math tex">\[\begin{equation}
+\vec{\epsilon}(\vec{r}, t) = \vec{E}_{\mathrm{in}} \Re{e^{- i \omega t} e^{i \vec{k} \cdot \vec{r}}},
+\end{equation}\]</div>
+<p>where <span class="math tex">\(\vec{E}_{\mathrm{in}}\)</span> is the magnitude and polarization of the field,
+<span class="math tex">\(\omega\)</span> is the frequency, and <span class="math tex">\(\vec{k}\)</span> is the inverse wave length. We have
+taken the real part of the complex wavefunction because the electric field is
+real-valued, but it is customary in electromagnetism keep everything
+complex and take the real part at the end, so we will do the same.</p>
+<p>The X-Ray exerts a force on the electron, which moves according to Newton’s
+law. Therefore, we can solve and ODE to obtain <span class="math tex">\(\vec{r}_e(t)\)</span></p>
+<div class="display-math tex">\[\begin{equation}
+\frac{\partial^2 \vec{r}_e(t)} {\partial t^2} = - \frac{e}{m_e} \vec{\epsilon}(\vec{r}_n + \vec{r}_e(t), t),  \label{eqn:x-ray-ode}
+\end{equation}\]</div>
+<p>where <span class="math tex">\(m_e\)</span> is the mass of the electron. Let us also assume that the incident
+field is transverse, which means that <span class="math tex">\(\vec{E}_{\mathrm{in}} \cdot \vec{k} = 0\)</span>. Because the electron moves in the direction of the field, we also  have
+<span class="math tex">\(\vec{r}_e(t) \cdot \vec{k} = 0\)</span>. This allows us to write <span class="math tex">\(\vec{\epsilon}(\vec{r}_n + \vec{r}_e(t), t) = \vec{\epsilon}(\vec{r}_n, t)\)</span> and the solution to Eq. <span class="math tex">\(\ref{eqn:x-ray-ode}\)</span>
+is</p>
+<div class="display-math tex">\[\begin{equation}
+\vec{r}_e(t) = \frac{e}{ m_e \omega^2} \vec{E}_{\mathrm{in}} e^{i \vec{k} \cdot \vec{r}_n} e^{- i \omega t}.
+\end{equation}\]</div>
+<p>We have implicitly and arbitrarily chosen a boundary condition because
+different boundary conditions will lead to the same result.</p>
+<h3 id="radiation-from-an-oscillating-dipole-"><a href="#radiation-from-an-oscillating-dipole-" class="anchor"></a>Radiation from an oscillating dipole</h3>
+<p>An oscillating point charge radiates electromagnetic field. This can be seen by
+solving the Maxwell equation with the source electron density</p>
+<div class="display-math tex">\[\begin{equation}
+\rho(\vec{r}, t) = e \delta(\vec{r} - \vec{r}_e(t)).
+\end{equation}\]</div>
+<p>The solution to this type of problems can be found in 9.1 and 9.2 in
+(<span class="citation"><a href="#ref-ClassicalElectJackso1999">Jackson 1999</a></span>), which approximates the vector potential given a
+time harmonic source current</p>
+<div class="display-math tex">\[\begin{equation}
+\vec{A}(\vec{r}, t) = \frac{\mu_0}{ 4 \pi} \frac{e^{i \vec{k} \cdot \vec{r}}}{r} \int \vec{J}(\vec{r}', t) \mathrm{d} r', \label{eqn:vector-potential}
+\end{equation}\]</div>
+<p>where <span class="math tex">\(\mu_0\)</span> is one of many annoying but inconsequential constants that you
+should not care about. This approximation holds when 1) the source <span class="math tex">\(\vec{J}\)</span> is
+localized in space and 2) <span class="math tex">\(\vec{r}\)</span> is far away from the source (far field),
+and 3) the current is time harmonic, i.e., <span class="math tex">\(\vec{J}(\vec{r}, t) = \vec{J}(\vec{r}) e^{-i \omega t}\)</span>.</p>
+<p>Since our source is given in terms of the charge density, we need to
+relate it to the current density through the continuity relation.</p>
+<div class="admonition theorem" id="cont-relation"><p class="admonition-title">Theorem</p>
+<p>For the purpose of demonstrating the syntax for theorems, we write the
+continuity relation as a theorem</p>
+<div class="display-math tex">\[\begin{equation}
+\grad \cdot  \vec{J} (\vec{r}, t) = \frac{\partial \rho(\vec{r}, t)}{\partial t} = 
+(\nabla \delta) (\hat{r} - \hat{r}_e(t)) \cdot \frac{\partial \vec{r}_e(t)}{\partial t},
+\end{equation}\]</div>
+<p>which is indeed time harmonic because <span class="math tex">\(\vec{r}_e(t)\)</span> is time harmonic.</p>
+</div>
+<p>We can combine Eq. <a href="#cont-relation"></a> with integration by
+part to obtain an electric dipole</p>
+<div class="display-math tex">\[\begin{equation}
+\vec{p}(t) = \int \vec{J} (\vec{r}', t) \mathrm{d} r' = - \int \vec{r}' \nabla
+\cdot \vec{J}(\vec{r}', t) \mathrm{d} r' = - \int \vec{r}' \rho(\vec{r}', t)
+\mathrm{d} r' = -e \vec{r}_e(t).
+\end{equation}\]</div>
+<p>The integration by part works because the source current <span class="math tex">\(\vec{J}\)</span> is localized
+in space, so the boundary term vanishes. Plugging this into the vector
+potential in Eq. <span class="math tex">\(\ref{eqn:vector-potential}\)</span>  yields</p>
+<div class="display-math tex">\[\begin{equation}
+\vec{A}(\vec{r}, t) = - \frac{\mu_0 e}{ 4\pi} \frac{e^{i \vec{k} \cdot \vec{r}}}{r} \vec{r}_e(t).
+\end{equation}\]</div>
+<p>The magnetic field can be obtained through the vector potential and
+the electric field can be obtained from the fourth Maxwell equation.</p>
+<div class="display-math tex">\[\begin{align}
+\vec{H}(\vec{r}, t)  &=  \frac{1}{\mu_0} \nabla \times \vec{A}(\vec{r}, t),\\
+\vec{E}(\vec{r}, t)  &=  \frac{i Z_0}{k} \nabla \times \vec{H}(\vec{r}, t),
+\end{align}\]</div>
+<p>where <span class="math tex">\(Z_0\)</span> is an unimportant physical constant. This produces an electric
+field at the detector position as</p>
+<div class="display-math tex">\[\begin{equation}
+\vec{E}(\vec{R}_D, t) = \frac{e^2}{m_e c^2} \left(
+\hat{n} \times (\hat{n} \times \vec{E}_{\mathrm{in}}) \right)
+e^{i \vec{k} \cdot \vec{r}_n} e^{-i \omega t} 
+\frac{e^{i |\vec{k}| |\vec{R}_D - \vec{r}_n|}}{|\vec{r}_D - \vec{r}_n|}.
+\label{eqn:scattered-field}
+\end{equation}\]</div>
+<h3 id="phase-approximation-"><a href="#phase-approximation-" class="anchor"></a>Phase Approximation</h3>
+<p>In the form of <span class="math tex">\(\ref{eqn:scattered-field}\)</span>, it is still inconvenient to solve
+for <span class="math tex">\(\vec{r}_n\)</span> given the measurements <span class="math tex">\(\vec{E}(\vec{R}_D, t)\)</span>, so we can
+further approximate it with a Tylor expansion so that it looks like a
+planewave.</p>
+<div class="display-math tex">\[\begin{equation}
+|\vec{k}| |\vec{R}_D - \vec{r}_n| 
+= |\vec{k}| |\vec{R}_D| \sqrt{1 - 2 \frac{\vec{r}_n \cdot \vec{R}_D}{|\vec{R}_D|^2} + \frac{|\vec{r}|^2}{|\vec{R}_D|^2}}
+\approx |\vec{k}| |\vec{R}_D| -  |\vec{k}| \frac{\vec{r}_n \cdot \vec{R}_D}{|\vec{R}_D|} 
+= |\vec{k}| \hat{n} \cdot \vec{R}_D - |\vec{k}| \hat{n} \cdot \vec{r}_n
+\end{equation}\]</div>
+<p>Defining <span class="math tex">\(\vec{q} = |\vec{k}| \hat{n} - \vec{k}\)</span>, which can be determined from the
+position of the detector and the planewave direction, we find</p>
+<div class="display-math tex">\[\begin{equation}
+\frac{e^{i |\vec{k}| |\vec{R}_D - \vec{r}_n|}}{|\vec{R}_D - \vec{r}_n|} \approx \frac{e^{i |\vec{k}|
+|\vec{R}_D|}}{|\vec{R}_D|} e^{i (\vec{k} + \vec{q}) \cdot \vec{r}_n}.
+\end{equation}\]</div>
+<p>With this approximation, we find that the dependence of the radiated field on
+the position of the detector and the atom to be.</p>
+<div class="display-math tex">\[\begin{equation}
+\vec{E}(\vec{R}_D, t) \propto e^{- i \vec{q} \cdot \vec{r}_n}.
+\end{equation}\]</div>
+<h3 id="form-factor"><a href="#form-factor" class="anchor"></a>Form factor</h3>
+<p>In the case where there are <span class="math tex">\(N_e\)</span> electrons, we have multiple sources of
+radiation, and they superimpose due to the linearity of the Maxwell equations.
+Thus, we can replace <span class="math tex">\(e^{- i \vec{q} \cdot \vec{r}_n}\)</span> by</p>
+<div class="display-math tex">\[\begin{equation}
+f(\vec{q}) = \sum_{i = 1}^Z e^{- i \vec{q} \cdot \vec{r}_j},
+\end{equation}\]</div>
+<p>which is called the form factor. More generally, when the electrons are not
+point charges but charge densities <span class="math tex">\(\rho\)</span>, the form factor is just the Fourier
+transform of the density.</p>
+<div class="display-math tex">\[\begin{equation}
+f(\vec{q}) = \int \mathrm{d} \vec{r} e^{- i \vec{q} \cdot \vec{r}} \rho(\vec{r}).
+\label{eqn:form-factor}
+\end{equation}\]</div>
+<p>Since the detector measures <span class="math tex">\(f(\vec{q})\)</span>, we can recover the electron density
+by taking a inverse Fourier transform.</p>
+<p>It is worth pointing out that the model we have developed for the X-Ray
+scattering experiment breaks down when we have more than one electrons or when
+the electron is not a point charge. Thus, we have not proven
+<span class="math tex">\(\ref{eqn:form-factor}\)</span> as a relation between the measurement <span class="math tex">\(f(\vec{q})\)</span> and
+the electron density <span class="math tex">\(\rho\)</span>.</p>
+<h2 id="bravais-and-reciprocal-lattice-"><a href="#bravais-and-reciprocal-lattice-" class="anchor"></a>Bravais and reciprocal lattice</h2>
+<p>Once we measure <span class="math tex">\(f(\vec{q})\)</span> experimentally, it turns out that it sharply
+peaks on a lattice, which is shown in <a href="#recip"></a>.</p>
+<div class="admonition figure" id="recip" style="width:400px"><p class="admonition-title">Figure</p>
+<p><img src="assets/lattice/reciprocal.svg" alt="An example of a reciprocal lattice" /></p>
+</div>
+<p>This lattice can be described as a set of integer linear combinations of three
+basis vectors <span class="math tex">\(G_1\)</span>, <span class="math tex">\(G_2\)</span>, and <span class="math tex">\(G_3\)</span>.</p>
+<div class="display-math tex">\[\begin{equation}
+\mathbb{L}^{*} = \left. \left\{ \sum_{i = 1}^{3} n_i \vec{G}_i  \right| n_i \in \mathbb{Z}, \forall i \in [\![3]\!]  \right\}.
+\end{equation}\]</div>
+<p>This definition allows us to write down <span class="math tex">\(f(\vec{q})\)</span> approximately as</p>
+<div class="display-math tex">\[\begin{equation}
+f(\vec{q}) = \sum_{G \in \mathbb{L}^*} \overline{\rho}_{\vec{G}} \delta(\vec{q} - \vec{G}),
+\end{equation}\]</div>
+<p>where the coefficients <span class="math tex">\(\overline{\rho}\)</span> are the intensity of the peaks. From
+the frequency space data, we can reconstruct the electron density by inverting
+<span class="math tex">\(\ref{eqn:form-factor}\)</span></p>
+<div class="display-math tex">\[\begin{equation}
+\rho(r) = \sum_{\vec{G} \in \mathbb{L}^*} \overline{\rho}_{\vec{G}} e^{i \vec{G} \cdot \vec{r}}, \label{eqn:series}
+\end{equation}\]</div>
+<p>which is a Fourier series expansion whose expansion coefficients are <span class="math tex">\(\overline{\rho}\)</span>.</p>
+<p>If we visualize the density <span class="math tex">\(\rho\)</span> as in <a href="#bravais"></a>, we will see that it is also
+repeated on a lattice, which is called the Bravais lattice.</p>
+<div class="admonition figure" id="bravais" style="width:400px"><p class="admonition-title">Figure</p>
+<p><img src="assets/lattice/bravais.svg" alt="A example of a Bravais lattice" /></p>
+</div>
+<p>To describe the
+Bravais lattice, we need to identify three primitive lattice translation
+vectors <span class="math tex">\(\vec{a}_1, \vec{a}_2, \vec{a}_3\)</span>. The lattice is defined as
+a set of vectors</p>
+<div class="display-math tex">\[\begin{equation}
+\mathbb{L} = \left. \left\{\sum_i^{3} n_i \vec{a}_i \right| n_i \in \mathbb{Z}, \forall i \right\}.
+\end{equation}\]</div>
+<p>The periodicity of <span class="math tex">\(\rho\)</span> is now specified as
+<span class="math tex">\(\rho(\vec{r}) = \rho(\vec{r} + \vec{R}), \forall \vec{R} \in \mathbb{L}\)</span>.
+Plugging this into Eq. <span class="math tex">\(\ref{eqn:series}\)</span>, we find that
+<span class="math tex">\(e^{i \vec{G} \cdot \vec{R}} = 1, \forall \vec{G} \in \mathbb{L}^*, \vec{R} \in \mathbb{L}\)</span>.
+For this relation to hold, one sufficient condition is</p>
+<div class="display-math tex">\[\begin{equation}
+\vec{G}_i \cdot \vec{a}_j = 2\pi \delta_{i j},
+\end{equation}\]</div>
+<p>which is used for relating the two lattices. In fact, these domains are important for
+defining Bloch waves and Wannier functions, which will be introduced in sec. <a href="#bloch-theorem"></a> and <a href="#wannier-interpolation"></a>.</p>
+<h2 id="unit-cell-and-first-brillouin-zone"><a href="#unit-cell-and-first-brillouin-zone" class="anchor"></a>Unit cell and first Brillouin zone</h2>
+<p>When computing observables of a periodic systems such as the number electrons,
+considering the full system always results in infinities. Instead, we consider
+the number of electrons per period. This periodic is called a unit cell, which is conventionally defined as
+semi-open set</p>
+<div class="display-math tex">\[\begin{equation}
+\Omega = \left. \left\{\sum_{i=1}^3 c_i \vec{a}_i \right| c_i \in [-1/2, 1/2) \right\},
+\end{equation}\]</div>
+<p>which is illustrated as a shaded region in <a href="#recip"></a>. The definition of the
+unit cell is not unique, but it should satisfy a requirement: tiling a unit
+cell at each point in the Bravais should yield the full space. Mathematically,
+this means</p>
+<div class="display-math tex">\[\begin{equation}
+\mathbb{R}^3 = \mathbb{L} \times \Omega = \bigsqcup_{R \in \mathbb{L}} \left. \left\{\vec{r} + \vec{R} \right| \forall \vec{r} \in \Omega \right\}, \label{eqn:tiling}
+\end{equation}\]</div>
+<p>where the notation <span class="math tex">\(\mathbb{L} \times \Omega\)</span> is formally a direct group
+product. Note how the semi-open definition makes the union in
+<span class="math tex">\(\ref{eqn:tiling}\)</span> disjoint.</p>
+<p>A similar problem of divergence arises in the frequency space, so there is an
+analogous domain called the first Brillouin zone. The definition is again not unique
+as long as it tiles <span class="math tex">\(\mathbb{R}^3\)</span>. A conventional definition is</p>
+<div class="display-math tex">\[\begin{equation}
+\Omega^* = \left. \left\{\sum_{i=1}^3 c_i \vec{G}_i \right| c_i \in [-1/2, 1/2) \right\},
+\end{equation}\]</div>
+<p>which is shown in <a href="#bravais"></a>.</p>
+<details class="title" style="margin: 1em 0em"><summary id="symmetry-bloch.md" class="page"><span >Symmetry/bloch</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">## Translational symmetry 
+
+
+## Bloch theorem
+
+
+## Fourier analysis
+</code></pre></details>
+<h2 id="translational-symmetry-"><a href="#translational-symmetry-" class="anchor"></a>Translational symmetry</h2>
+<h2 id="bloch-theorem"><a href="#bloch-theorem" class="anchor"></a>Bloch theorem</h2>
+<h2 id="fourier-analysis"><a href="#fourier-analysis" class="anchor"></a>Fourier analysis</h2>
+<details class="title" style="margin: 1em 0em"><summary id="symmetry-discretization.md" class="page"><span >Symmetry/discretization</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">## Monkhorst Pack grid
+
+## Planewave Basis
+
+## Exchange
+</code></pre></details>
+<h2 id="monkhorst-pack-grid"><a href="#monkhorst-pack-grid" class="anchor"></a>Monkhorst Pack grid</h2>
+<h2 id="planewave-basis"><a href="#planewave-basis" class="anchor"></a>Planewave Basis</h2>
+<h2 id="exchange"><a href="#exchange" class="anchor"></a>Exchange</h2>
+<details class="title" style="margin: 1em 0em"><summary id="symmetry-wannier.md" class="page"><span >Symmetry/wannier</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">## Wannier interpolation
+
+## Wannier localization
+
+## Topological invariants
+</code></pre></details>
+<h2 id="wannier-interpolation"><a href="#wannier-interpolation" class="anchor"></a>Wannier interpolation</h2>
+<h2 id="wannier-localization"><a href="#wannier-localization" class="anchor"></a>Wannier localization</h2>
+<h2 id="topological-invariants"><a href="#topological-invariants" class="anchor"></a>Topological invariants</h2>
+<details class="title" style="margin: 1em 0em"><summary id="model-tight_binding.md" class="page"><span >Model/tight binding</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">## Two-band hybridization
+
+## Band gap
+
+## Graphene
+</code></pre></details>
+<h2 id="two-band-hybridization"><a href="#two-band-hybridization" class="anchor"></a>Two-band hybridization</h2>
+<h2 id="band-gap"><a href="#band-gap" class="anchor"></a>Band gap</h2>
+<h2 id="graphene"><a href="#graphene" class="anchor"></a>Graphene</h2>
+<details class="title" style="margin: 1em 0em"><summary id="model-dft.md" class="page"><span >Model/dft</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">## Kohn Sham DFT
+
+## Local density approximation
+
+## Pseudopotential
+</code></pre></details>
+<h2 id="kohn-sham-dft"><a href="#kohn-sham-dft" class="anchor"></a>Kohn Sham DFT</h2>
+<h2 id="local-density-approximation"><a href="#local-density-approximation" class="anchor"></a>Local density approximation</h2>
+<h2 id="pseudopotential"><a href="#pseudopotential" class="anchor"></a>Pseudopotential</h2>
+<details class="title" style="margin: 1em 0em"><summary id="model-hubbard.md" class="page"><span >Model/hubbard</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">## Hubbard and magnetism
+
+## Heisenberg model
+
+## Bethe ansatz</code></pre></details>
+<h2 id="hubbard-and-magnetism"><a href="#hubbard-and-magnetism" class="anchor"></a>Hubbard and magnetism</h2>
+<h2 id="heisenberg-model"><a href="#heisenberg-model" class="anchor"></a>Heisenberg model</h2>
+<h2 id="bethe-ansatz-"><a href="#bethe-ansatz-" class="anchor"></a>Bethe ansatz</h2>
+<details class="title" style="margin: 1em 0em"><summary id="model-dqmc.md" class="page"><span >Model/dqmc</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">???
+</code></pre></details>
+<p>???</p>
+<details class="title" style="margin: 1em 0em"><summary id="model-afqmc.md" class="page"><span >Model/afqmc</span></summary><pre><div><p></p><button>copy</button></div><code class="language-julia">???</code></pre></details>
+<p>???</p>
+<div class="references">
+<h2 id="refs"><a href="#refs" class="anchor"></a>References</h2>
+<p id="ref-ModernCondenseGirvin2019">Girvin, Steven M., and Kun Yang. 2005. <em>Modern Condensed Matter Physics. </em>Cambridge University Press. </p>
+<p id="ref-ClassicalElectJackso1999">Jackson, John David. 1999. <em>Classical electrodynamics. </em>Wiley. </p>
+
+</div>
+
+    </div>
+    </div>
+</body>
+
+</html>
+    
