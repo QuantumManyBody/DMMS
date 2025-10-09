@@ -51,7 +51,7 @@
 .main {
     width: 1240px;
     margin: 0em auto;
-    scrollbar-color: rgb(160, 160, 160) rgb(30, 30, 30);
+    scrollbar-color: rgb(30, 30, 30) rgb(120, 120, 120) ;
 }
 
 a {
@@ -68,6 +68,7 @@ a:hover {
     padding: 0 12px;
     height: 100%;
     overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 .content {
@@ -76,7 +77,10 @@ a:hover {
 
 .content-2 {
     float: left;
-    scrollbar-color: rgb(15, 15, 15) rgb(15, 15, 15);
+}
+
+.content-2::-webkit-scrollbar {
+  display: none;
 }
 
 .searchbar {
@@ -179,7 +183,6 @@ pre code.hljs {
     font-size: 12pt;
     font-family: "Geist Mono", monospace;
     scrollbar-color: rgb(160, 160, 160) rgb(30, 30, 30);
-    background-color: rgb(15,15,15);
 }
 
 .page {
@@ -335,6 +338,61 @@ mark {
     font-size: 2em;
     background-color: rgb(15, 15, 15);
 }
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 56px;
+    height: 20px;
+    margin: 0.8em 0.8em 0em 0.8em;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(200, 200, 200);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 26px;
+    left: 2px;
+    bottom: 2px;
+    background-color: rgb(60, 60, 60);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: rgb(214, 0, 28);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #(40, 40, 40);
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
 </style>
 <script>
     async function copyCode(block) {
@@ -366,6 +424,7 @@ function process_page() {
     set_keys();
     number_sections();
     second_column();
+    init_theme()
     clip();
 }
 
@@ -688,6 +747,66 @@ function latexSearch(){
     }
 }
 
+function init_theme() {
+    let curr_theme = localStorage.getItem("theme");
+    localStorage.setItem("theme", "dark");
+    if (curr_theme == "light") {
+        toggle_theme();
+        let toggler = document.getElementById("theme");
+        toggler.checked = true;
+    } 
+    
+}
+
+function toggle_theme() {
+
+    body = document.querySelector('body') 
+    sepbar = document.getElementById("sep-bar")
+    headers = document.querySelectorAll('.main, h1, h2, h3, h4, .tex') 
+    theme = document.querySelector('link[href*="highlight.js"]')
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    images = document.querySelectorAll('p img')
+    if (localStorage.getItem("theme") == "dark") {
+        headers.forEach((node) => {
+            node.style.background = "rgb(255, 255, 255)"
+            node.style.color = "rgb(0, 0, 0)"
+        });
+        body.style.background = "rgb(255, 255, 255)"
+        if (theme !== null) {
+            theme.remove();
+        }
+        link.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/panda-syntax-light.css"
+  document.querySelector("head").append(link);
+        if (sepbar !== null) {
+            sepbar.style.borderBottom = "4px solid black"
+        }
+        images.forEach((img) => {
+            img.style.filter = "invert(1)";
+        });
+        localStorage.setItem("theme", "light");
+    } else {
+        headers.forEach((node) => {
+            node.style.background = "rgb(15, 15, 15)"
+            node.style.color = "rgb(255, 255, 255)"
+        });
+        body.style.background = "rgb(15, 15, 15)"
+        if (theme !== null) {
+            theme.remove();
+        }
+        link.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/sunburst.min.css"
+  document.querySelector("head").append(link);
+        if (sepbar !== null) {
+            sepbar.style.borderBottom = "4px solid white"
+        }
+
+        images.forEach((img) => {
+            img.style.filter = "none";
+        });
+        localStorage.setItem("theme", "dark");
+    }
+}
+
 </script>
 
 <script>
@@ -717,6 +836,15 @@ MathJax = {
     width="120px" src="./assets/logo.png">
     </image>
     <div class="pkgname">DMMS</div>
+    <div>
+    <label class="switch">
+      <input id="theme" type="checkbox"
+    onclick="toggle_theme()"
+    >
+      <span class="slider"></span>
+    </label>
+    <span> 💡 </span>
+    </div>
     <div class="searchbar">
     <input 
       type="search" 
@@ -739,7 +867,15 @@ MathJax = {
     <div class="toggler" onclick="toggle_sidebar();">-</div>
     <div class="main">
     <div class="content">
-    <h1 id="diagnostic-manual-of-material-simulation"><a href="#diagnostic-manual-of-material-simulation" class="anchor"></a>Diagnostic Manual of Material Simulation</h1>
+    <div id="sep-bar" style="
+display:flex;
+align-items: center;
+justify-content: center;
+padding-bottom: 4em;
+border-bottom: 4px solid white;
+">
+<h1 style="font-size: 2.2em"> Diagnostic Manual of Material Simulation </h1>
+</div>
 <div class="admonition warning"><p class="admonition-title">Warning</p>
 <p>The following practices are considered academic integrity violations.</p>
 <ul>
